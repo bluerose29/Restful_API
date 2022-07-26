@@ -1,21 +1,17 @@
-import express from "express";
-import bodyParser from "body-parser";
-
-// function for routing
-import tasksRoutes from "./routes/tasks.js";
+import express, { json } from "express";
+import { port } from "./config.js";
+import cors from "cors";
+import { json as _json } from "body-parser";
+import { routes } from "./routes/tasks.js";
 
 const app = express();
-const PORT = 5000;
 
-// use to convert into json and to be use in the program
-app.use(bodyParser.json());
+app.use(json());
+app.use(cors());
+app.use(_json());
 
-// use tasks as an api route
-app.use("/tasks", tasksRoutes);
+app.use("/api", routes);
 
-// default route
-app.get("/", (req, res) => res.send("Hello World"));
-
-app.listen(PORT, () =>
-  console.log(`Example running on port: http://localhost:${PORT}`)
-);
+app.listen(port, () => {
+  console.log("app listening on url http://localhost:" + port);
+});
